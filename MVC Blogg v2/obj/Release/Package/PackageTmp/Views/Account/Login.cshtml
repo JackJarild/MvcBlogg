@@ -1,0 +1,60 @@
+﻿@using MVC_Blogg_v2.Models
+@model LoginViewModel
+@{
+    Layout = null;
+    ViewBag.Title = "Log in";
+}
+
+<html>
+<head>
+    <title>Log in</title>
+    <link rel="stylesheet" type="text/css" href="~/Content/style.css">
+    <link rel="stylesheet" href="~/fonts/font-awesome.min.css">
+</head>
+<body>
+
+        <div class="background">
+        <div class="login-form">
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()
+            @* Två tomma input boxar så autocomplete inte förstör designen (transparent background)*@
+            <input style="display:none">
+            <input type="password" style="display:none">
+            
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            <span class="input input-style">
+                @Html.TextBoxFor(m => m.Email, new { @class = "input-field input-field-style"})
+                <label class="input-label input-label-style" for="Email" data-content="Email">
+                    <span class="input-label-content input-label-content-style">Email</span>
+                </label>
+            </span>
+
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+            <span class="input input-style">
+                @Html.PasswordFor(m => m.Password, new { @class = "input-field input-field-style" })
+                <label class="input-label input-label-style" for="input-email" data-content="Password">
+                    <span class="input-label-content input-label-content-style">Password</span>
+                </label>
+            </span>
+                      
+            <button type="submit" class="login-btn" name="login">
+                LOG IN
+            </button>
+
+            }
+            
+            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+
+
+            
+            <p>@Html.ActionLink("Register as a new user", "Register")</p>
+        </div>
+    </div>
+
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+</body>
+</html>

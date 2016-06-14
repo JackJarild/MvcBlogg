@@ -1,0 +1,37 @@
+﻿@model IEnumerable<MVC_Blogg_v2.Models.Category>
+
+@{
+    ViewBag.Title = "Categories";
+}
+
+<h2>Categories</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>CRUD</th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.CategoryId }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.CategoryId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.CategoryId })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

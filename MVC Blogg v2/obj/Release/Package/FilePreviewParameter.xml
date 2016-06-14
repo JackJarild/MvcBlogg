@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="Jacksblogg" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Jack\\Documents\\Visual\ Studio\ 2013\\Projects\\MVC\ Blogg\ v2\\MVC\ Blogg\ v2\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\Jack\\Documents\\Visual\ Studio\ 2013\\Projects\\MVC\ Blogg\ v2\\MVC\ Blogg\ v2\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="DefaultConnection-Web.config Connection String" description="" value="Data Source=tcp:mvcblogg.database.windows.net,1433;Initial Catalog=Jacksblogg_db;User Id=Jack@mvcblogg;Password=sq30az!ï2" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Jack\\Documents\\Visual\ Studio\ 2013\\Projects\\MVC\ Blogg\ v2\\MVC\ Blogg\ v2\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+</parameters>

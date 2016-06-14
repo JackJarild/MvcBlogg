@@ -1,0 +1,63 @@
+﻿@model MVC_Blogg_v2.Models.RegisterViewModel
+@{
+    Layout = null;
+    ViewBag.Title = "Register";
+}
+
+<html>
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="~/Content/style.css">
+    <link rel="stylesheet" href="~/fonts/font-awesome.min.css">
+</head>
+<body>
+
+    <div class="background">
+        <div class="login-form">
+            <h3 class="text-center white">Register</h3>
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form", autocomplete = "off" }))
+            {
+                @Html.AntiForgeryToken()
+                @* Två tomma input boxar så autocomplete inte förstör designen (transparent background)*@
+                <input style="display:none">
+                <input type="password" style="display:none">
+
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+                <span class="input input-style">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "input-field input-field-style" })
+                    <label class="input-label input-label-style" for="Email" data-content="Email">
+                        <span class="input-label-content input-label-content-style">Email</span>
+                    </label>
+                </span>
+
+                <span class="input input-style">
+                    @Html.PasswordFor(m => m.Password, new { @class = "input-field input-field-style" })
+                    <label class="input-label input-label-style" for="input-email" data-content="Password">
+                        <span class="input-label-content input-label-content-style">Password</span>
+                    </label>
+                </span>
+
+                <span class="input input-style">
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "input-field input-field-style" })
+                    <label class="input-label input-label-style" for="input-email" data-content="Confirm Password">
+                        <span class="input-label-content input-label-content-style">Confirm Password</span>
+                    </label>
+                </span>
+
+
+                <button type="submit" class="login-btn" name="Register">
+                    Register
+                </button>
+
+            }
+
+        </div>
+    </div>
+
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+</body>
+</html>

@@ -1,0 +1,97 @@
+﻿@*@model MVC_Blogg_v2.Models.PostViewModel*@
+@model MVC_Blogg_v2.Models.PostViewModel
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jack's Blog</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,300,600,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="~/Content/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/indexStyle.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+</head>
+
+<body>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+    { 
+    }
+    <div id="container">
+        <header>
+            <div class="header-image">
+                <nav class="clearfix main-menu">
+                    <ul class="clearfix main-ul">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li>@Html.ActionLink("HOME", "Index", "Home", null, new { @class = "hvr-underline-from-center" })</li>
+                            <li>@Html.ActionLink("POSTS", "Index", "Post", null, new { @class = "hvr-underline-from-center" })</li>
+                            <li>@Html.ActionLink("CATEGORIES", "Index", "Category", null, new { @class = "hvr-underline-from-center" })</li>
+                            @Html.Partial("_LoginPartial")
+                        }
+                        else
+                        {
+                        <li>@Html.ActionLink("HOME", "Index", "Home", null, new { @class = "hvr-underline-from-center" })</li>
+                        <li>@Html.ActionLink("ABOUT ME", "About", "Home", null, new { @class = "hvr-underline-from-center" })</li>
+                        <li>@Html.ActionLink("CONTACT", "Contact", "Home", null, new { @class = "hvr-underline-from-center" })</li>
+                        @Html.Partial("_LoginPartial")
+                        }
+                    </ul>
+                    <a href="#" id="pull">Menu</a>
+                </nav>
+            </div>
+            <div class="header-text">
+                <h1>Jack's Blogg</h1>
+            </div>
+        </header>
+
+        <nav class="category-nav">
+            <ul class="category-ul clearfix">
+                <li>@Html.ActionLink("MOST RECENT", "Index", new { sortOrder = ViewBag.DateSortParam }, new { @class = "hvr-underline-from-center" })</li>
+                @foreach(var item in Model.Categories)
+                {
+                    <li>@Html.ActionLink(@item.Name.ToUpper(), "Index", new { category = @item.Name }, new { @class = "hvr-underline-from-center" })</li>
+                }
+                @*<li>@Html.ActionLink("SKOLA", "Index", new {  sortOrder = ViewBag.NameSortParam, category = "Skola" }, new { @class = "hvr-underline-from-center" })</li>*@
+            </ul>
+            <a href="#" id="pull2" class="hvr-underline-from-center">CATEGORIES</a>
+        </nav>
+
+        <hr>
+
+        <div id="content-wrapper">
+            <div class="grid">
+
+            
+                @foreach (var item in Model.Posts)
+                {
+                    <div class="grid-cell">
+                        <h5>@String.Format("{0:dddd dd MMM yyy}", item.DateCreated).ToUpper()</h5>
+                        <a class="post-link" href="@Url.Action("Post", new { id = item.PostId })">
+                            <h2>@Html.DisplayFor(modelItem => item.Title)</h2>
+                            <p class="short-description">
+                                @Html.DisplayFor(modelItem => item.ShortDescription)
+                            </p>
+                        </a>
+                        <p class="tags"><span>Category: </span> @item.Category.Name.ToUpper()</p>
+                        <hr class="color-divider">
+                    </div>
+                }
+            </div> <!-- GRID -->
+            <div class="next-page-container">
+                Page @(Model.Posts.PageCount < Model.Posts.PageNumber ? 0 : Model.Posts.PageNumber) of @Model.Posts.PageCount
+
+                @Html.PagedListPager(Model.Posts, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+                @*<button type="button" class=" btnn btn-next btn-right icon-arrow-right">Next</button>*@
+            </div>
+        </div> <!-- CONTENT-WRAPPER -->
+    </div> <!-- CONTAINER -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+	</html>

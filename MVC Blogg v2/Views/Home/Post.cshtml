@@ -1,0 +1,121 @@
+﻿@*@model MVC_Blogg_v2.Models.Post*@
+@model MVC_Blogg_v2.Models.CommentViewModel
+
+@{
+    Layout = null;
+    ViewBag.Title = "Post";
+}
+
+<html>
+<head>
+    <title>@Model.Post.Title</title>
+
+    <link rel="stylesheet" type="text/css" href="~/Content/style.css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,300,600,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+
+    <div id="fb-root"></div>
+    <script>
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=391747471017522";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+    <div class="post-hero">
+        <img style="background-image:url(@Model.Post.ImageUrl)">
+        <div class="hero-content">
+            <a class="category-link">@Model.Post.Category.Name.ToUpper()</a>
+            <h1>@Model.Post.Title.ToUpper()</h1>
+            <h3>@Model.Post.Author</h3>
+        </div>
+    </div>
+    <div id="container">
+        <div class="column-article">
+            <article class="post">
+                <div class="entry">
+                    <p>
+                        @MvcHtmlString.Create(Model.Post.Content.Replace(Environment.NewLine, "<br />"))
+                    </p>
+                </div>
+            </article>
+        </div>
+        <div class="fb">
+            <div class="fb-comments" data-href="@Request.Url.ToString()" data-numposts="5" data-colorscheme="light"></div>
+        </div>
+
+        @*@{Html.RenderAction("Post", "Home", new { area = "", postId = Model.PostId });}*@
+
+        <div class="comment-form">
+            @using (Html.BeginForm("Post", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <h4>Comment</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Comment.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Comment.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Comment.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Comment.Content, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Comment.Content, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Comment.Content, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    @Html.HiddenFor(model => model.Post.Author)
+                    @Html.HiddenFor(model => model.Post.Category)
+                    @Html.HiddenFor(model => model.Post.CategoryId)
+                    @Html.HiddenFor(model => model.Post.Comments)
+                    @Html.HiddenFor(model => model.Post.Content)
+                    @Html.HiddenFor(model => model.Post.DateCreated)
+                    @Html.HiddenFor(model => model.Post.ImageUrl)
+                    @Html.HiddenFor(model => model.Post.PostId)
+                    @Html.HiddenFor(model => model.Post.ShortDescription)
+                    @Html.HiddenFor(model => model.Post.Title)
+                    @Html.HiddenFor(model => model.Post.Category.Name)
+                    @Html.HiddenFor(model => model.Post.Category.CategoryId)
+
+                    
+                    @Html.HiddenFor(model => model.Comment.PostId)
+                    @Html.HiddenFor(model => model.Comment.Post)
+                    @Html.HiddenFor(model => model.Comment.CommentId)
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            @Html.HiddenFor(model => model.Comment.DatePosted, new { htmlAttributes = new { @class = "form-control", @Value = System.DateTime.Now } })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create" class="btn btn-default" />
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+            @foreach (var item in Model.Comments)
+            {
+                @item.Email
+                @item.Content
+            }
+        </div>
+    </div>
+</body>
+</html>
